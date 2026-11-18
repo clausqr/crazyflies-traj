@@ -1,0 +1,23 @@
+# fleet.yaml: one traj_player per vehicle (node /<ns>/traj_player). csv_path is
+# the container path (/traj = trajectories/); any player parameter can be set per
+# vehicle (e.g. speedup: 2.0 flies the file in half the time, limits re-checked).
+# Vehicles missing from the graph are warned about, the others fly on.
+# Three-drone circle: r 0.5 m around the origin, 1.0 m above the pad,
+# 60 s + 4 s ramps, cf1 / cf2 / cf3 at 0 / 120 / 240 deg of the same circle, all moving the
+# same way (always 0.87 m from each other). A two-drone pair (cf1 0 deg, cf2 180 deg)
+# is circle_1m_0 + circle_1m_180, both still in trajectories/fleet/.
+/cf1/traj_player:
+  ros__parameters:
+    csv_path: /traj/fleet/circle_1m_0.csv
+    speedup: 8.0
+    yaw: path
+/cf2/traj_player:
+  ros__parameters:
+    csv_path: /traj/fleet/circle_1m_120.csv
+    speedup: 8.0
+    yaw: path
+/cf3/traj_player:
+  ros__parameters:
+    csv_path: /traj/fleet/circle_1m_240.csv
+    speedup: 8.0
+    yaw: path

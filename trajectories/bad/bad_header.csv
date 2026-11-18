@@ -1,0 +1,4 @@
+# header names a time column instead of t
+x,y,z,time
+0,0,0.5,0
+0.2,0,0.5,2

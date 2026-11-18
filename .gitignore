@@ -1,0 +1,19 @@
+# colcon artifacts (the workspace is bind-mounted and built in the container)
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+
+# rehearsal outputs (throwaway, written by test/rehearsal/run_rehearsal.sh)
+ros2_ws/rehearsal_out/
+
+# downloaded LAN client profiles (the loopback ones in dds/ are committed)
+dds/*_client.xml
+
+# site-specific values (groundstation URL and login), never committed
+rr.local

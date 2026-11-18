@@ -1,0 +1,5 @@
+# 130 s leg exceeds max_duration 120 s
+x,y,z,t
+0,0,0.5,0
+0.5,0,0.5,65
+0,0,0.5,130

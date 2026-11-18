@@ -1,0 +1,12 @@
+# The Dockerfile only COPYs ros2_packages.txt; ros2_ws and trajectories are
+# bind-mounted at runtime. Keep the build context tiny.
+ros2_ws
+trajectories
+tests
+scripts
+.git
+.gitignore
+**/__pycache__
+.pytest_cache
+README.md
+CONTRIBUTING.md

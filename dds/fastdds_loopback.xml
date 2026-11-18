@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!--
+  Fast DDS profile that forces all RTPS traffic onto loopback (127.0.0.1).
+  Used when RMW_IMPLEMENTATION is rmw_fastrtps_cpp (the ROS 2 default on
+  Humble/Jazzy). See the rationale in cyclonedds_loopback.xml: under
+  --net=host an uncontained transport leaks discovery and topics onto the LAN.
+
+  Selected via FASTRTPS_DEFAULT_PROFILES_FILE (scripts/run.bash).
+  Bind-mounted into the container at /ros2_ws/config.
+
+  useBuiltinTransports=false is load-bearing: a custom
+  userTransports is ADDED to Fast DDS's builtin transports, it does not replace
+  them. Without the flag every participant also runs the builtin shared-memory
+  transport and a builtin UDPv4 transport on ALL interfaces (SPDP multicast on
+  239.255.0.1 included), so the loopback pin above did not hold, and same-host
+  containers with their own /dev/shm (rr runs them ipc=private) were offered a
+  SHM path that cannot cross them. With the flag, udp_loopback is the ONLY
+  transport and same-host traffic between containers goes over lo.
+-->
+<profiles xmlns="http://www.eprosima.com">
+
+  <transport_descriptors>
+    <transport_descriptor>
+      <transport_id>udp_loopback</transport_id>
+      <type>UDPv4</type>
+      <!-- Port-less initialPeersList below makes Fast DDS probe participant-ID
+           candidate ports 0..maxInitialPeersRange-1 for the peer; default 4
+           only reaches the first 4 participants created on this host/domain,
+           so a 5th+ same-host participant is found only by the periodic SPDP
+           announcement (multi-second latency, hits the e-stop path). Raised
+           past the >=6-participant case. -->
+      <maxInitialPeersRange>16</maxInitialPeersRange>
+      <interfaceWhiteList>
+        <address>127.0.0.1</address>
+      </interfaceWhiteList>
+    </transport_descriptor>
+  </transport_descriptors>
+
+  <participant profile_name="loopback_participant" is_default_profile="true">
+    <rtps>
+      <userTransports>
+        <transport_id>udp_loopback</transport_id>
+      </userTransports>
+      <!-- udp_loopback is the only transport: no builtin SHM, no builtin all-NIC UDPv4. -->
+      <useBuiltinTransports>false</useBuiltinTransports>
+      <builtin>
+        <initialPeersList>
+          <locator>
+            <udpv4><address>127.0.0.1</address></udpv4>
+          </locator>
+        </initialPeersList>
+      </builtin>
+    </rtps>
+  </participant>
+</profiles>

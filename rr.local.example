@@ -1,0 +1,4 @@
+# Copy to rr.local (git-ignored) and fill in. Sourced by setup.env.
+# The values are given to you by your instructor or lab (the person running the groundstation).
+RR_DDS_URL="http://GROUNDSTATION/dds"     # where the groundstation serves its DDS client profiles
+RR_DDS_LOGIN="USER:PASSWORD"              # basic-auth login for that URL
