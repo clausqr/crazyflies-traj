@@ -92,18 +92,6 @@ def test_in_container_rehearsal_refuses_live_graphs(env, why):
     assert r.returncode == 3 and why in r.stderr, r.stderr
 
 
-def test_traj_run_refuses_fly_as_a_parameter(dds):
-    r = sh('traj.bash', 'run', 'square_1m.csv', 'fly:=true', RR_DDS_DIR=str(dds))
-    assert r.returncode == 2 and 'with --fly' in r.stderr
-
-
-def test_traj_refuses_a_csv_outside_the_mount(dds, tmp_path):
-    outside = tmp_path / 'x.csv'
-    shutil.copy(os.path.join(ROOT, 'trajectories', 'square_1m.csv'), outside)
-    r = sh('traj.bash', 'check', str(outside), RR_DDS_DIR=str(dds))
-    assert r.returncode == 2 and 'outside' in r.stderr
-
-
 def test_missing_profile_refused_with_the_download_command(tmp_path):
     for mode in ('loopback', 'lan'):
         r = sh('run.bash', '--print', RR_DDS_DIR=str(tmp_path / 'nope'), RR_NET_MODE=mode)

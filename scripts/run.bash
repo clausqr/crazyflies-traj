@@ -15,7 +15,7 @@
 #   --cmd '<command>'   run <command> detached (bash -lc) instead of a shell
 #   --fg                with --cmd: run it in the FOREGROUND (TTY when there is
 #                       one), so Ctrl-C reaches it as SIGINT and the exit code is
-#                       the command's (rr traj run uses this)
+#                       the command's
 #   --print             print the docker command and exit (used by the tests)
 #
 # EXAMPLES (dry run first, always):

@@ -1,33 +1,35 @@
 # crazyflies-traj: CSV trajectory player for Crazyflie swarms (ROS 2)
 
-Fly a CSV trajectory (`x, y, z, t`) on one or several **Bitcraze Crazyflie**
-quadcopters from a **ROS 2** (Jazzy) node. It validates the file offline,
-refuses anything outside a flight envelope, and, once the vehicle is already
-airborne and stable, streams the path as setpoints (`/cf1/cmd_full_state`) to a
-motion-capture groundstation (the separate `crazyflies-gs` plant, not in this
-repo; your lab or instructor provides it). The **operator** is the person
-running the groundstation and the flight.
-
-**No groundstation? Most of this still runs:**
-
-```bash
-python3 -m pytest                      # host unit tests, Python 3.10+ and pytest only
-./rr traj check trajectories/square_1m.csv     # offline validation, no ROS
-./rr build && ./rr rehearse            # the real player vs a mock plant (Docker)
-```
+Plays a CSV trajectory (`x, y, z, t`) on one or several Bitcraze Crazyflies
+from a ROS 2 Jazzy node. It checks the file against a flight envelope first and
+only streams setpoints once the drone is airborne and stable. It needs a
+motion-capture groundstation (`crazyflies-gs`, not in this repo; your
+instructor runs it). The **operator** is whoever runs the groundstation and the
+flight.
 
 ## Quickstart (dry run first)
 
+In a ROS 2 Jazzy shell with the package built (`cd ros2_ws && colcon build &&
+source install/setup.bash`):
+
 ```bash
-./rr build                                      # lean image + colcon build, once
-./rr traj check square_1m.csv --setpoints --z0 0.063   # every setpoint, world z
-./rr traj run square_1m.csv                     # DRY RUN against the live graph, publishes nothing
-./rr traj fleet fleet.yaml --dry-run            # one player per vehicle; without --dry-run it FLIES
-./rr traj run square_1m.csv --name traj --fly   # only after the dry run
+# offline check, no ROS graph needed
+python3 -m crazyflies_traj.cli check trajectories/square_1m.csv --setpoints --z0 0.063
+
+# dry run against the live graph: prints every setpoint, publishes nothing
+ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv
+
+# fly (only after the dry run, with the operator)
+ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p fly:=true
+
+# three-drone fleet from trajectories/fleet.yaml: fly:=false first, the default is true
+ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml fly:=false
 ```
 
-Site values (groundstation URL and login) go in `rr.local`, copied from
-`rr.local.example` (git-ignored; the operator gives you the values).
+No groundstation? `python3 -m pytest` runs the unit tests (Python 3.10+, pytest
+only), and `./rr build && ./rr rehearse` runs the real player against a mock
+plant in Docker. Site values for the Docker harness go in `rr.local`, copied
+from `rr.local.example`.
 
 ## CSV format
 
@@ -46,7 +48,7 @@ x,y,z,t
 - Yaw is not a column: `yaw:=fixed` (default) or `yaw:=path` (nose follows the path).
 - Samples are in `trajectories/`; `trajectories/bad/` has one file per refusal code.
 
-## Limits (all are `traj check --<name>` flags and player parameters)
+## Limits (`cli check --<name>` flags and player parameters)
 
 | Limit | Default |
 |---|---|
@@ -69,20 +71,20 @@ node then never creates a publisher. Codes: `bad_header`, `bad_row`,
 ```yaml
 /cf1/traj_player:
   ros__parameters:
-    csv_path: /traj/fleet/circle_1m_0.csv
+    csv_path: trajectories/fleet/circle_1m_0.csv
     yaw: path
 /cf2/traj_player:
   ros__parameters:
-    csv_path: /traj/fleet/circle_1m_120.csv
+    csv_path: trajectories/fleet/circle_1m_120.csv
 ```
 
 The shipped file flies a three-drone circle (r 0.5 m, cf1/cf2/cf3 at 0, 120 and
-240 degrees). **`rr traj fleet` flies by default; pass `--dry-run` first.**
+240 degrees). **`fleet.launch.py` flies by default; pass `fly:=false` first.**
 
 ## Safety
 
-- **Dry run is the default** for `rr traj run` / `traj_player` (`fly:=false`).
-  Flying needs `--fly` / `fly:=true`.
+- **Dry run is the default** for `traj_player` (`fly:=false`). Flying needs
+  `fly:=true`.
 - The player never takes off, lands, or arms. The operator does that.
 - The player publishes nothing until the vehicle is airborne, stable and fresh
   mocap and odometry are present. It aborts (and stops publishing) on stale

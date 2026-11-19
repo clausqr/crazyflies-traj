@@ -20,8 +20,8 @@ def test_sample_fleet_is_the_three_drone_circle():
     with open(os.path.join(ROOT, 'trajectories', 'fleet.yaml')) as f:
         fleet = vehicles(yaml.safe_load(f))
     assert [(ns, p['csv_path']) for ns, p in fleet] == [
-        ('cf1', '/traj/fleet/circle_1m_0.csv'), ('cf2', '/traj/fleet/circle_1m_120.csv'),
-        ('cf3', '/traj/fleet/circle_1m_240.csv')]
+        ('cf1', 'trajectories/fleet/circle_1m_0.csv'), ('cf2', 'trajectories/fleet/circle_1m_120.csv'),
+        ('cf3', 'trajectories/fleet/circle_1m_240.csv')]
 
 
 def test_ints_for_double_parameters_become_floats():

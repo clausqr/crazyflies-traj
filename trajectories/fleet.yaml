@@ -8,16 +8,16 @@
 # is circle_1m_0 + circle_1m_180, both still in trajectories/fleet/.
 /cf1/traj_player:
   ros__parameters:
-    csv_path: /traj/fleet/circle_1m_0.csv
+    csv_path: trajectories/fleet/circle_1m_0.csv
     speedup: 8.0
     yaw: path
 /cf2/traj_player:
   ros__parameters:
-    csv_path: /traj/fleet/circle_1m_120.csv
+    csv_path: trajectories/fleet/circle_1m_120.csv
     speedup: 8.0
     yaw: path
 /cf3/traj_player:
   ros__parameters:
-    csv_path: /traj/fleet/circle_1m_240.csv
+    csv_path: trajectories/fleet/circle_1m_240.csv
     speedup: 8.0
     yaw: path

@@ -1,15 +1,15 @@
 # Three-drone circle from circulo-3-drones.xlsx (tools/make_circle_xlsx.py): r 0.5 m around the
 # origin, 1.0 m above the pad, 30 deg/s, cf1 / cf2 / cf3 at 0 / 120 / 240 deg, nose along the tangent.
-# Dry run first: ./rr traj fleet examples/circulo-3-drones_fleet.yaml --dry-run
+# Dry run first: ros2 launch crazyflies_traj fleet.launch.py config:=trajectories/examples/circulo-3-drones_fleet.yaml fly:=false
 /cf1/traj_player:
   ros__parameters:
-    csv_path: /traj/examples/circulo-3-drones_cf1.csv
+    csv_path: trajectories/examples/circulo-3-drones_cf1.csv
     yaw: path
 /cf2/traj_player:
   ros__parameters:
-    csv_path: /traj/examples/circulo-3-drones_cf2.csv
+    csv_path: trajectories/examples/circulo-3-drones_cf2.csv
     yaw: path
 /cf3/traj_player:
   ros__parameters:
-    csv_path: /traj/examples/circulo-3-drones_cf3.csv
+    csv_path: trajectories/examples/circulo-3-drones_cf3.csv
     yaw: path
