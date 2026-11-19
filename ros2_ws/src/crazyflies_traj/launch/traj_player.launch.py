@@ -19,8 +19,7 @@ from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 
-# (name, default, description). fly defaults to false and must stay so: the
-# repo guard tests/test_repo_guards.py fails if any default here enables flight.
+# (name, default, description). fly defaults to false and must stay so.
 ARGS = [
     ('csv_path', '', 'trajectory CSV (x, y, z, t; z above pad z0), e.g. /traj/square_1m.csv'),
     ('fly', 'false', 'false = DRY RUN (publishes nothing); true = stream once airborne'),

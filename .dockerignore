@@ -9,4 +9,3 @@ scripts
 **/__pycache__
 .pytest_cache
 README.md
-CONTRIBUTING.md
