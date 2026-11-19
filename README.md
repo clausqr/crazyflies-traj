@@ -24,11 +24,6 @@ ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/s
 ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml
 ```
 
-No groundstation? `python3 -m pytest` runs the unit tests (Python 3.10+, pytest
-only). As a courtesy there is a Docker image with ROS 2 Jazzy: `./rr build`,
-`./rr run`, `./rr join`, `./rr stop`. Site values for it go in `rr.local`, copied
-from `rr.local.example`.
-
 ## CSV format
 
 ```csv
