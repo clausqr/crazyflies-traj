@@ -58,20 +58,6 @@ x,y,z,t
 The shipped file flies a three-drone circle (r 0.5 m, cf1/cf2/cf3 at 0, 120 and
 240 degrees). **`fleet.launch.py` flies by default; pass `fly:=false` to only watch.**
 
-## Safety
-
-- **Dry run is the default** for `traj_player` (`fly:=false`). Flying needs
-  `fly:=true`.
-- The player never takes off, lands, or arms. The operator does that.
-- The player publishes nothing until the vehicle is airborne, stable and fresh
-  mocap and odometry are present. It aborts (and stops publishing) on stale
-  data, large tracking error, another command publisher, or fatal supervisor
-  flags. State machine:
-  `WAIT_AIRBORNE -> ARMED_READY -> APPROACH -> READY -> FLYING -> HOLD -> DONE`,
-  any state to `ABORT`.
-- If the player exits while the drone is airborne, **land immediately**
-  (`/cf1/land`, then `/cf1/notify_setpoints_stop`).
-
 ## License
 
 Apache License 2.0, see [LICENSE](LICENSE).
