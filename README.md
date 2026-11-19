@@ -41,22 +41,6 @@ x,y,z,t
 - Yaw is not a column: `yaw:=fixed` (default) or `yaw:=path` (nose follows the path).
 - Samples are in `trajectories/`; `trajectories/bad/` has one file per refusal code.
 
-## Limits (`cli check --<name>` flags and player parameters)
-
-| Limit | Default |
-|---|---|
-| x, y box | +-1.75 m around the origin |
-| z (above pad) | 0.20 to 2.00 m |
-| speed / acceleration | 2.5 m/s / 4.0 m/s^2 |
-| duration | 120 s |
-| start tolerance | 0.15 m (farther starts are approached first) |
-
-A violating file is refused with `REFUSED <code>: <why>` and exit code 1; the
-node then never creates a publisher. Codes: `bad_header`, `bad_row`,
-`not_numeric`, `non_finite`, `too_few_rows`, `duplicate_row`, `non_monotone_t`,
-`t_not_zero`, `too_long`, `geofence`, `below_floor`, `speed`, `accel`,
-`yaw_rate`, `start_far`.
-
 ## Fleet
 
 `trajectories/fleet.yaml` is a ROS 2 params file with one entry per vehicle:
