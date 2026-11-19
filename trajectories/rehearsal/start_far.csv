@@ -1,4 +1,0 @@
-# rehearsal: starts 1.4 m from a vehicle hovering over the origin (the approach flies it there)
-x,y,z,t
-1.0,1.0,0.5,0
-1.2,1.0,0.5,2

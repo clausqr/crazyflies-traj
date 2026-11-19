@@ -11,8 +11,7 @@
 # ros:jazzy-ros-base-noble (resolved with `docker buildx imagetools inspect`).
 # The apt message packages are read LIVE from packages.ros.org (it
 # serves only the latest build per distro), so they are not version-pinned;
-# the rehearsal's interface check (test/rehearsal/check_interfaces.py) fails
-# loudly if a release ever changes a field the player uses.
+# a release may change a field the player uses.
 ARG RR_ROS_DISTRO=jazzy
 FROM ros:jazzy-ros-base-noble@sha256:2589a8fba5257307857890173c069852c2abf913a0be7970f172478baecb09e4
 ARG RR_ROS_DISTRO=jazzy

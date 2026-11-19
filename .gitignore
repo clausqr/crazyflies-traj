@@ -9,9 +9,6 @@ __pycache__/
 *.egg-info/
 .pytest_cache/
 
-# rehearsal outputs (throwaway, written by test/rehearsal/run_rehearsal.sh)
-ros2_ws/rehearsal_out/
-
 # downloaded LAN client profiles (the loopback ones in dds/ are committed)
 dds/*_client.xml
 

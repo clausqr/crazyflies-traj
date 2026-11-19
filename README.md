@@ -1,7 +1,8 @@
 # crazyflies-traj: CSV trajectory player for Crazyflie swarms (ROS 2)
 
 Plays a CSV trajectory (`x, y, z, t`) on one or several Bitcraze Crazyflies
-from a ROS 2 Jazzy node. It checks the file against a flight envelope first and
+from a ROS 2 Jazzy node. Yaw is not a CSV column but a parameter: `yaw:=fixed`
+(default, holds 0 deg) or `yaw:=path` (the nose follows the path). It checks the file against a flight envelope first and
 only streams setpoints once the drone is airborne and stable. It needs a
 motion-capture groundstation (`crazyflies-gs`, not in this repo; your
 instructor runs it). The **operator** is whoever runs the groundstation and the
@@ -17,7 +18,7 @@ source install/setup.bash`):
 python3 -m crazyflies_traj.cli check trajectories/square_1m.csv --setpoints --z0 0.063
 
 # dry run against the live graph: prints every setpoint, publishes nothing
-ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv
+ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p yaw:=path
 
 # fly (only after the dry run, with the operator)
 ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p fly:=true
@@ -27,8 +28,8 @@ ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml
 ```
 
 No groundstation? `python3 -m pytest` runs the unit tests (Python 3.10+, pytest
-only), and `./rr build && ./rr rehearse` runs the real player against a mock
-plant in Docker. Site values for the Docker harness go in `rr.local`, copied
+only). As a courtesy there is a Docker image with ROS 2 Jazzy: `./rr build`,
+`./rr run`, `./rr join`, `./rr stop`. Site values for it go in `rr.local`, copied
 from `rr.local.example`.
 
 ## CSV format
@@ -94,8 +95,6 @@ The shipped file flies a three-drone circle (r 0.5 m, cf1/cf2/cf3 at 0, 120 and
   any state to `ABORT`.
 - If the player exits while the drone is airborne, **land immediately**
   (`/cf1/land`, then `/cf1/notify_setpoints_stop`).
-- Offline rehearsal refuses ROS domains 0 and 66 and any non-loopback DDS
-  profile, and the image has no USB, so tests can never command hardware.
 
 ## License
 

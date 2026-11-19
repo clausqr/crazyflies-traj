@@ -1,6 +1,0 @@
-# rehearsal: 0.4 m line and back at 0.2 m/s from the origin, 0.5 m above the pad
-x,y,z,t
-0,0,0.5,0
-0.4,0,0.5,2
-0.4,0,0.5,2.5
-0,0,0.5,4.5

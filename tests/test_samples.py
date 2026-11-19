@@ -12,7 +12,6 @@ from crazyflies_traj.trajectory import Limits, load_csv, TrajError
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TRAJ = os.path.join(ROOT, 'trajectories')
 GOOD = sorted(glob.glob(os.path.join(TRAJ, '*.csv')))
-REHEARSAL = sorted(glob.glob(os.path.join(TRAJ, 'rehearsal', '*.csv')))
 BAD = sorted(glob.glob(os.path.join(TRAJ, 'bad', '*.csv')))
 
 # Flown on hardware (linear, relative frame). Dense 20 ms rows after 4 s lead-in
@@ -21,7 +20,7 @@ BAD = sorted(glob.glob(os.path.join(TRAJ, 'bad', '*.csv')))
 # on the floor margin (0, 0, z_floor) instead of the hover point.
 LISSAJOUS = {'spherical_lissajous_slow.csv', 'spherical_lissajous_fast.csv'}
 GOOD_INTERP = [pytest.param(p, i, id=f'{i}-{os.path.basename(p)}')
-               for i in ('linear', 'pchip') for p in GOOD + REHEARSAL
+               for i in ('linear', 'pchip') for p in GOOD
                if not (i == 'pchip' and os.path.basename(p) in LISSAJOUS)]
 
 

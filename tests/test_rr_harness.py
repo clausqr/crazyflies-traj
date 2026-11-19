@@ -5,7 +5,6 @@ ever called (a refused run cannot start a container).
 """
 
 import os
-import shutil
 import subprocess
 
 import pytest
@@ -62,34 +61,6 @@ def test_bad_domain_refused(dds, dom):
 def test_bad_net_mode_refused(dds):
     r = sh('run.bash', '--print', RR_DDS_DIR=str(dds), RR_NET_MODE='wifi')
     assert r.returncode == 3
-
-
-@pytest.mark.parametrize('dom', ['0', '66'])
-def test_rehearse_refuses_live_domains(dom):
-    r = sh('rehearse.bash', RR_ROS_DOMAIN_ID=dom)
-    assert r.returncode == 3 and 'live graph' in r.stderr
-
-
-def test_rehearse_refuses_lan():
-    r = sh('rehearse.bash', RR_NET_MODE='lan')
-    assert r.returncode == 3 and 'loopback only' in r.stderr
-
-
-@pytest.mark.parametrize('env,why', [
-    ({'ROS_DOMAIN_ID': '66', 'FASTRTPS_DEFAULT_PROFILES_FILE': '/x/fastdds_loopback.xml'},
-     '0 and 66'),
-    ({'ROS_DOMAIN_ID': '0', 'FASTRTPS_DEFAULT_PROFILES_FILE': '/x/fastdds_loopback.xml'},
-     '0 and 66'),
-    ({'FASTRTPS_DEFAULT_PROFILES_FILE': '/x/fastdds_loopback.xml'}, '0 and 66'),
-    ({'ROS_DOMAIN_ID': '133', 'FASTRTPS_DEFAULT_PROFILES_FILE': '/x/fastdds_client.xml'},
-     'not a loopback profile'),
-])
-def test_in_container_rehearsal_refuses_live_graphs(env, why):
-    e = {k: v for k, v in os.environ.items() if not k.startswith(('ROS_', 'FASTRTPS'))}
-    e.update(env)
-    r = subprocess.run(['bash', 'ros2_ws/src/crazyflies_traj/test/rehearsal/run_rehearsal.sh'],
-                       cwd=ROOT, env=e, capture_output=True, text=True, timeout=30)
-    assert r.returncode == 3 and why in r.stderr, r.stderr
 
 
 def test_missing_profile_refused_with_the_download_command(tmp_path):
