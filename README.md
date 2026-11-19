@@ -17,8 +17,8 @@ source install/setup.bash`), from the repo root:
 # check a file offline (no ROS graph needed)
 python3 -m crazyflies_traj.cli check trajectories/square_1m.csv --setpoints --z0 0.063
 
-# run it (publishes nothing unless fly:=true)
-ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p yaw:=path -p fly:=true
+# run it (publishes nothing until you add -p fly:=true)
+ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p yaw:=path
 
 # three-drone fleet from trajectories/fleet.yaml
 ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml
