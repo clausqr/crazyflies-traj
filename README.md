@@ -33,7 +33,7 @@ x,y,z,t
 1.0000,1.0000,0.5000,8.000
 ```
 
-- Header names `x, y, z, t` (any order); meters and seconds; `#` lines and
+- Header names `x, y, z, t`; meters and seconds; `#` lines and
   blank lines are ignored; `nan`/`inf` are refused.
 - `t` starts at 0 and strictly increases; at least 2 rows.
 - `x, y` are in the motion-capture world frame (`absolute`, default) or offsets
