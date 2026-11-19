@@ -1,30 +1,27 @@
 # crazyflies-traj: CSV trajectory player for Crazyflie swarms (ROS 2)
 
 Plays a CSV trajectory (`x, y, z, t`) on one or several Bitcraze Crazyflies
-from a ROS 2 Jazzy node. Yaw is not a CSV column but a parameter: `yaw:=fixed`
-(default, holds 0 deg) or `yaw:=path` (the nose follows the path). It checks the file against a flight envelope first and
-only streams setpoints once the drone is airborne and stable. It needs a
-motion-capture groundstation (`crazyflies-gs`, not in this repo; your
-instructor runs it). The **operator** is whoever runs the groundstation and the
-flight.
+from a ROS 2 Jazzy node. It checks the file against a flight envelope, then
+streams setpoints once the drone is airborne and stable. Yaw is a parameter, not
+a CSV column: `yaw:=fixed` (default, 0 deg) or `yaw:=path` (nose follows the
+path). It needs a motion-capture groundstation (`crazyflies-gs`, not in this
+repo; your instructor runs it). The **operator** is whoever runs the
+groundstation and the flight.
 
-## Quickstart (dry run first)
+## Quickstart
 
 In a ROS 2 Jazzy shell with the package built (`cd ros2_ws && colcon build &&
-source install/setup.bash`):
+source install/setup.bash`), from the repo root:
 
 ```bash
-# offline check, no ROS graph needed
+# check a file offline (no ROS graph needed)
 python3 -m crazyflies_traj.cli check trajectories/square_1m.csv --setpoints --z0 0.063
 
-# dry run against the live graph: prints every setpoint, publishes nothing
-ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p yaw:=path
+# run it (publishes nothing unless fly:=true)
+ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p yaw:=path -p fly:=true
 
-# fly (only after the dry run, with the operator)
-ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p fly:=true
-
-# three-drone fleet from trajectories/fleet.yaml: fly:=false first, the default is true
-ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml fly:=false
+# three-drone fleet from trajectories/fleet.yaml
+ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml
 ```
 
 No groundstation? `python3 -m pytest` runs the unit tests (Python 3.10+, pytest
@@ -80,7 +77,7 @@ node then never creates a publisher. Codes: `bad_header`, `bad_row`,
 ```
 
 The shipped file flies a three-drone circle (r 0.5 m, cf1/cf2/cf3 at 0, 120 and
-240 degrees). **`fleet.launch.py` flies by default; pass `fly:=false` first.**
+240 degrees). **`fleet.launch.py` flies by default; pass `fly:=false` to only watch.**
 
 ## Safety
 
