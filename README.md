@@ -9,9 +9,6 @@ pad height is known). So take off first and hover, then start the node, and
 land right after: it holds the last setpoint for `hold_s` seconds and then stops
 publishing. It never takes off, lands or arms.
 
-It needs the motion-capture groundstation `crazyflies-gs` (not in this repo),
-run by your instructor. Yaw is a parameter, not a CSV column.
-
 ## Quickstart
 
 From the repo root, in a ROS 2 Jazzy shell with the package built:
