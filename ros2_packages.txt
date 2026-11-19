@@ -1,4 +1,3 @@
 ros-${RR_ROS_DISTRO}-crazyflie-interfaces
-ros-${RR_ROS_DISTRO}-motion-capture-tracking-interfaces
 python3-pytest
 bash-completion

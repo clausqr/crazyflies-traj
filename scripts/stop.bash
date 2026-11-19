@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
 #
 # DESCRIPTION:
-#   Stop a running crazyflies-traj container (SIGTERM first: a traj_player in
-#   it treats TERM as an abort and destroys its command publisher at once).
+#   Stop a running crazyflies-traj container (SIGTERM first).
 #
 # USAGE:
 #   rr stop [--name <container_name>]

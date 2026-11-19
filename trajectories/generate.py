@@ -5,14 +5,9 @@ Regenerate the sample trajectories in this directory (standard library only).
     python3 trajectories/generate.py
 
 All three start and end at rest at (0, 0, 0.5): x, y in the Motive world frame
-with the pad under the origin, z 0.5 m above the pad z0. They were designed
-against the original limits (v_max 0.5 m/s, a_max 1.0 m/s^2, geofence x, y in
-[-1.5, 1.5]) and so sit well inside the current, wider defaults.
+with the pad under the origin, z 0.5 m above the pad z0.
 Curved paths ramp their speed up and down with a cosine blend so the start from
 hover and the stop into the hold are gentle.
-
-The deliberately bad files live in bad/, named after the refusal code they
-must produce (tests/test_samples.py checks both directions).
 """
 
 import math

@@ -3,9 +3,8 @@
 # Deliberately NOT the plant image (crazyflies20, about 4.7 GB: desktop ROS,
 # Crazyswarm2 server, cflib/cfclient, cffirmware bindings, USB tooling). This
 # repo only runs a DDS client (traj_player) and its tests, so it starts from
-# ros-base and adds exactly the two message packages the player speaks:
-# crazyflie_interfaces (FullState, Position, Status) and
-# motion_capture_tracking_interfaces (NamedPoseArray on /poses).
+# ros-base and adds exactly the message package the player speaks:
+# crazyflie_interfaces (FullState).
 #
 # Base pinned by DIGEST: the multi-arch index digest of
 # ros:jazzy-ros-base-noble (resolved with `docker buildx imagetools inspect`).

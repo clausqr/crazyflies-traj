@@ -1,62 +1,68 @@
-# crazyflies-traj: CSV trajectory player for Crazyflie swarms (ROS 2)
+# crazyflies-traj
 
-Plays a CSV trajectory (`x, y, z, t`) on one or several Bitcraze Crazyflies
-from a ROS 2 Jazzy node. It checks the file against a flight envelope, then
-streams setpoints once the drone is airborne and stable. Yaw is a parameter, not
-a CSV column: `yaw:=fixed` (default, 0 deg) or `yaw:=path` (nose follows the
-path). It needs a motion-capture groundstation (`crazyflies-gs`, not in this
-repo; your instructor runs it). The **operator** is whoever runs the
-groundstation and the flight.
+A ROS 2 Jazzy node that plays a trajectory on a Crazyflie. It reads a CSV of
+x, y, z, t, interpolates it linearly and publishes FullState setpoints on
+`/<ns>/cmd_full_state` at `rate_hz`.
+
+It starts publishing as soon as it starts (once a subscriber is matched and the
+pad height is known). So take off first and hover, then start the node, and
+land right after: it holds the last setpoint for `hold_s` seconds and then stops
+publishing. It never takes off, lands or arms.
+
+It needs the motion-capture groundstation `crazyflies-gs` (not in this repo),
+run by your instructor. Yaw is a parameter, not a CSV column.
 
 ## Quickstart
 
-In a ROS 2 Jazzy shell with the package built (`cd ros2_ws && colcon build &&
-source install/setup.bash`), from the repo root:
+From the repo root, in a ROS 2 Jazzy shell with the package built:
 
-```bash
-# check a file offline (no ROS graph needed)
-python3 -m crazyflies_traj.cli check trajectories/square_1m.csv --setpoints --z0 0.063
-
-# run it (publishes nothing until you add -p fly:=true)
+```
+cd ros2_ws && colcon build && source install/setup.bash && cd ..
+python3 -m crazyflies_traj.trajectory trajectories/square_1m.csv --yaw path      # print setpoints, no ROS
 ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p yaw:=path
-
-# three-drone fleet from trajectories/fleet.yaml
 ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml
 ```
 
 ## CSV format
 
-```csv
+```
+# comment
 x,y,z,t
-0.0000,0.0000,0.5000,0.000
-1.0000,0.0000,0.5000,4.000
-1.0000,1.0000,0.5000,8.000
+0.0,0.0,0.5,0.0
+1.0,0.0,0.5,4.0
 ```
 
-- Header names `x, y, z, t`; meters and seconds; `#` lines and
-  blank lines are ignored; `nan`/`inf` are refused.
-- `t` starts at 0 and strictly increases; at least 2 rows.
-- `x, y` are in the motion-capture world frame (`absolute`, default) or offsets
-  from the airborne position (`relative`). `z` is height above the pad.
-- Yaw is not a column: `yaw:=fixed` (default) or `yaw:=path` (nose follows the path).
-- Samples are in `trajectories/`; `trajectories/bad/` has one file per refusal code.
+- The header line is optional, `#` lines are comments.
+- x, y in the world frame (m); z is the height above the pad (m); t in seconds.
+- t is shifted to start at 0 and must be strictly increasing.
+- nan and inf are rejected.
+
+## Parameters
+
+| name | default | meaning |
+|---|---|---|
+| csv_path | | trajectory file |
+| ns | cf1 | vehicle namespace |
+| rate_hz | 50 | setpoint rate |
+| yaw | fixed | `fixed` or `path` (nose along the path) |
+| yaw_deg | 0 | yaw for `fixed` |
+| speedup | 1 | play faster (2 = half the time) |
+| hold_s | 3 | seconds to hold the last setpoint |
+| pad_z0 | nan | pad height; nan uses the latched `/<ns>/pad_z0` topic |
 
 ## Fleet
 
-`trajectories/fleet.yaml` is a ROS 2 params file with one entry per vehicle:
+`fleet.launch.py` starts one node per top-level key of the yaml:
 
-```yaml
+```
 /cf1/traj_player:
   ros__parameters:
     csv_path: trajectories/fleet/circle_1m_0.csv
+    speedup: 8.0
     yaw: path
-/cf2/traj_player:
-  ros__parameters:
-    csv_path: trajectories/fleet/circle_1m_120.csv
 ```
 
-The shipped file flies a three-drone circle (r 0.5 m, cf1/cf2/cf3 at 0, 120 and
-240 degrees). **`fleet.launch.py` flies by default; pass `fly:=false` to only watch.**
+`trajectories/fleet.yaml` flies three drones on one circle, 120 degrees apart.
 
 ## License
 

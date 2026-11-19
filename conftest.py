@@ -1,8 +1,7 @@
 """pytest path bootstrap: make the stdlib-only core importable on the host.
 
-The pure modules live inside the ROS package (one source, no copy):
-ros2_ws/src/crazyflies_traj/crazyflies_traj/{trajectory,sampler,plan,player_core,cli}.py
-None of them imports ROS, so plain ``python3 -m pytest`` works on the host.
+trajectory.py is the stdlib-only core: it lives inside the ROS package (one source,
+no copy) and imports no ROS, so plain ``python3 -m pytest`` works on the host.
 """
 import os
 import sys

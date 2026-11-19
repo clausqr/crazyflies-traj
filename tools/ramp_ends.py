@@ -9,9 +9,7 @@ constant speed, the first row already at full speed) and writes
 trajectories/fleet/circle_*.csv: every x, y, z is kept, t is re-timed so the
 speed follows a cosine ramp from rest over the first RAMP_S seconds and back
 to rest over the last RAMP_S seconds (the same path, RAMP_S longer in all).
-Without it the player refuses `accel`: a 10 ms first row at 0.15 m/s from a
-hovering vehicle reads as 30 m/s^2 against the rest-to-rest check, the same
-reason the flown Lissajous files carry lead-in rows. The originals are kept.
+This way the vehicle starts and stops at rest. The originals are kept.
 """
 import csv
 import glob

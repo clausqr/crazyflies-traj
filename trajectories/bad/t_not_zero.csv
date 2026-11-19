@@ -1,4 +1,0 @@
-# starts at t=5 (use --normalize-t to shift)
-x,y,z,t
-0,0,0.5,5
-0.2,0,0.5,7

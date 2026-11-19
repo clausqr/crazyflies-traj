@@ -2,22 +2,14 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>crazyflies_traj</name>
-  <version>0.2.0</version>
-  <description>
-    CSV trajectory player: a DDS client of the crazyflies-gs plant that, once
-    the vehicle is airborne and stable, streams a validated x, y, z, t
-    trajectory as setpoints on /cfN/cmd_full_state (or cmd_position). Dry run
-    by default; never takes off, lands or arms.
-  </description>
+  <version>0.3.0</version>
+  <description>Streams an x,y,z,t CSV trajectory as FullState setpoints on /&lt;ns&gt;/cmd_full_state.</description>
   <maintainer email="clausqr@proton.me">Claus Rosito</maintainer>
   <license>Apache-2.0</license>
 
   <exec_depend>rclpy</exec_depend>
   <exec_depend>crazyflie_interfaces</exec_depend>
-  <exec_depend>motion_capture_tracking_interfaces</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
-  <exec_depend>nav_msgs</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
   <exec_depend>launch</exec_depend>
   <exec_depend>launch_ros</exec_depend>
   <exec_depend>python3-yaml</exec_depend>

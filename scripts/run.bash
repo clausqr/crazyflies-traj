@@ -5,7 +5,7 @@
 # tests. ros2_ws is bind-mounted at /ros2_ws, trajectories/ read-only at /traj,
 # the local dds/ profile directory read-only at /ros2_ws/config. An
 # interactive shell (no --cmd) prints /ros2_ws/motd.sh: domain, net mode,
-# profile, and the dry-run commands to start from.
+# profile, and the commands to start from.
 #
 # USAGE:
 #   rr run [--name <container>] [--cmd '<command>' [--fg]] [--print]
@@ -18,7 +18,7 @@
 #                       the command's
 #   --print             print the docker command and exit (used by the tests)
 #
-# EXAMPLES (dry run first, always):
+# EXAMPLES:
 #   ./rr run --cmd 'ros2 launch crazyflies_traj traj_player.launch.py csv_path:=/traj/square_1m.csv'
 #   RR_NET_MODE=lan ./rr run --name traj --cmd 'ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=/traj/square_1m.csv'
 

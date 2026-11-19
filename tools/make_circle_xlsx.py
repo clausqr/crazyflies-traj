@@ -209,8 +209,8 @@ def main():
         ['yaw', '', 'no es columna: volar con yaw: path (morro en la tangente, theta + 90 grados)'],
         ['exportar', '', 'por cada hoja cf1, cf2, cf3: Archivo > Guardar como > CSV UTF-8 (delimitado por comas), '
                          'punto decimal; nombre circulo-3-drones_cf1.csv, _cf2, _cf3'],
-        ['reglas', '', 'primera fila t = 0, t creciente, velocidad inicial y final cero, z entre 0.2 y 2.0, '
-                       'x,y dentro de +-1.75; verificar con python3 -m crazyflies_traj.cli check ARCHIVO.csv --yaw path'],
+        ['reglas', '', 'primera fila t = 0, t creciente, velocidad inicial y final cero, '
+                       'verificar con python3 -m crazyflies_traj.trajectory ARCHIVO.csv --yaw path'],
         ['sin Excel', '', 'python3 tools/make_circle_xlsx.py --xlsx-to-csv ARCHIVO.xlsx'],
         ['fleet', '', 'circulo-3-drones_fleet.yaml apunta a trajectories/examples/circulo-3-drones_cf*.csv'],
     ]
