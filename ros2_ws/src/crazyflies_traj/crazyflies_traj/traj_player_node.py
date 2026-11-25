@@ -49,11 +49,17 @@ class TrajPlayer(Node):
         self.z0 = msg.point.z
 
     def _tick(self):
-        if self.z0 is None or self.pub.get_subscription_count() == 0:
+        log = self.get_logger()
+        if self.z0 is None:
+            log.info('waiting for pad z0 (/<ns>/pad_z0 or -p pad_z0:=)', throttle_duration_sec=2.0)
+            return
+        if self.pub.get_subscription_count() == 0:
+            log.info('waiting for a subscriber on the command topic', throttle_duration_sec=2.0)
             return
         now = self.get_clock().now()
         if self.t0 is None:
             self.t0 = now
+            log.info(f'publishing: {self.traj.duration:.1f} s, pad z0 {self.z0:.3f} m')
         t = (now - self.t0).nanoseconds * 1e-9
         if t > self.traj.duration + self.hold_s:
             self.get_logger().info('DONE')
