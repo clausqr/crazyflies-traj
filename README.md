@@ -19,7 +19,7 @@ From the repo root, in a ROS 2 Jazzy shell with the package built:
 
 ```
 cd ros2_ws && colcon build && source install/setup.bash && cd ..
-python3 -m crazyflies_traj.trajectory trajectories/square_1m.csv --yaw path      # print setpoints, no ROS
+python3 ros2_ws/src/crazyflies_traj/crazyflies_traj/trajectory.py trajectories/square_1m.csv --yaw path   # print setpoints, no ROS
 ros2 run crazyflies_traj traj_player --ros-args -p csv_path:=$PWD/trajectories/square_1m.csv -p yaw:=path
 ros2 launch crazyflies_traj fleet.launch.py config:=$PWD/trajectories/fleet.yaml
 ```
