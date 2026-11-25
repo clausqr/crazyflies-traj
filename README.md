@@ -4,6 +4,10 @@ A ROS 2 Jazzy node that plays a trajectory on a Crazyflie. It reads a CSV of
 x, y, z, t, interpolates it linearly and publishes FullState setpoints on
 `/<ns>/cmd_full_state` at `rate_hz`.
 
+![Three Crazyflie nano quadcopters flying a synchronized circle trajectory from a CSV file with ROS 2, tracked by motion capture](media/crazyflie-swarm-circle-trajectory.gif)
+
+*Crazyflie swarm flying a CSV trajectory (three-drone circle) with ROS 2 Jazzy.*
+
 It starts publishing as soon as it starts (once a subscriber is matched and the
 pad height is known). So take off first and hover, then start the node, and
 land right after: it holds the last setpoint for `hold_s` seconds and then stops
